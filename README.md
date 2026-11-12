@@ -2,7 +2,7 @@
 
 Upload statistics module for the [CCI Django dashboard](https://github.com/CCI-GU-Sweden/Dashboard-django). This is an early extraction: it provides the upload pages and API, but still depends on the dashboard core for authentication, permissions, base templates and shared frontend assets. It is not a standalone Django project.
 
-The app reads the existing PostgreSQL `public.imports` table and does not modify it. It expects the columns `scope`, `time`, `username`, `file_count`, `total_file_size_mb` and `import_time_s`. The database role needs `SELECT` access. The upload collector, schema creation and schema compatibility checks are not yet included; the legacy collector and its schema must be identified before a fresh installation is supported.
+The app reads an existing PostgreSQL `imports` table on the connection's search path and does not modify it. It expects the columns `scope`, `time`, `username`, `file_count`, `total_file_size_mb` and `import_time_s`. The database role needs `SELECT` access. The existing [Omero_GU uploader](https://github.com/CCI-GU-Sweden/Omero_GU) creates this table and records uploads; its scheduled rollup compacts records. The uploader is a separate application and is not included in this module. Other installations need a compatible producer or their own data import; a fresh standalone data collector is not yet provided.
 
 ## Development integration
 
@@ -11,6 +11,8 @@ Install this package in the same Python environment as a compatible core checkou
 Existing URLs are `/uploads/`, `/api/uploads/summary` and `/api/uploads/scopes`. Staff/admin access is checked by the core's `accounts.permissions.operational_access` helper. The package expects the core's shared Plotly and html2canvas assets.
 
 Run the frontend test from this repository with `node --test tests/uploads_frontend.test.js`. The dashboard core's Django tests also exercise the module's access checks and API integration.
+
+With the module enabled, `python manage.py check_upload_schema` checks that the configured PostgreSQL connection can find and select the required columns without reading rows or changing schema/data. Use `--database ALIAS` for another configured Django database. The command does not validate column types, the uploader's write access, collector operation or full schema compatibility; it does not create or migrate the uploader-owned table. It can be used as an early preflight, not as a substitute for a versioned schema setup Job.
 
 ## License
 
