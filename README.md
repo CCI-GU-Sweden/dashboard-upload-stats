@@ -6,9 +6,11 @@ The app reads the existing PostgreSQL `public.imports` table and does not modify
 
 ## Development integration
 
-Install this package in the same Python environment as a compatible core checkout, add `upload_stats` to `INSTALLED_APPS`, and include `upload_stats.urls` in the core URL configuration. The in-progress core already has an upload enable switch, but currently contains its own local copy of the app; the core must switch to this distribution before it becomes the source used by its normal build. Templates and JavaScript are included as package data.
+Install this package in the same Python environment as a compatible core checkout, add `upload_stats` to `INSTALLED_APPS`, and include `upload_stats.urls` in the core URL configuration. The in-progress core has an upload enable switch; it must reference a compatible version of this package. Templates and JavaScript are included as package data.
 
 Existing URLs are `/uploads/`, `/api/uploads/summary` and `/api/uploads/scopes`. Staff/admin access is checked by the core's `accounts.permissions.operational_access` helper. The package expects the core's shared Plotly and html2canvas assets.
+
+Run the frontend test from this repository with `node --test tests/uploads_frontend.test.js`. The dashboard core's Django tests also exercise the module's access checks and API integration.
 
 ## License
 
