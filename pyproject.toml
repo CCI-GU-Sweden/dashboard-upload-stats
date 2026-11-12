@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cci-dashboard-upload-stats"
+version = "0.1.0"
+description = "Upload statistics module for the CCI dashboard"
+requires-python = ">=3.12"
+dependencies = ["Django>=5.2,<5.3"]
+license = "MIT"
+
+[tool.setuptools.packages.find]
+include = ["upload_stats*"]
+
+[tool.setuptools.package-data]
+upload_stats = ["templates/*.html", "static/js/*.js"]
