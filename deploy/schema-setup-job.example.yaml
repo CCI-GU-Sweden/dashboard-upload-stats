@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: upload-stats-schema-setup
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: schema-setup
+          image: REPLACE_WITH_REVIEWED_DASHBOARD_IMAGE_DIGEST
+          command: ["python", "manage.py", "setup_upload_schema", "--apply"]
+          env:
+            - name: DJANGO_SECRET_KEY
+              valueFrom: {secretKeyRef: {name: dashboard-runtime, key: secret-key}}
+            - name: PGHOST
+              valueFrom: {secretKeyRef: {name: dashboard-schema-credentials, key: host}}
+            - name: PGPORT
+              valueFrom: {secretKeyRef: {name: dashboard-schema-credentials, key: port}}
+            - name: PGDATABASE
+              valueFrom: {secretKeyRef: {name: dashboard-schema-credentials, key: database}}
+            - name: PGUSER
+              valueFrom: {secretKeyRef: {name: dashboard-schema-credentials, key: username}}
+            - name: PGPASSWORD
+              valueFrom: {secretKeyRef: {name: dashboard-schema-credentials, key: password}}

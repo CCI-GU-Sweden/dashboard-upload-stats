@@ -16,6 +16,8 @@ Run the frontend test from this repository with `node --test tests/uploads_front
 
 With the module enabled, `python manage.py check_upload_schema` checks that the configured PostgreSQL connection can find and select the required columns without reading rows or changing schema/data. Use `--database ALIAS` for another configured Django database. The command does not validate column types, the uploader's write access, collector operation or full schema compatibility; it does not create or migrate the uploader-owned table. It can be used as an early preflight, not as a substitute for a versioned schema setup Job.
 
+`python manage.py setup_upload_schema` performs a stricter baseline collision check. Add `--apply` to create `public.imports` only when no baseline objects exist. Matching tables are reused without changing data; partial or mismatching objects cause an error and rollback. This command uses the dashboard core's schema setup helper and requires a PostgreSQL setup identity able to create a temporary comparison schema and create objects in `public`. It does not grant runtime or uploader privileges. See `deploy/schema-setup-job.example.yaml` for an unconfigured Job; run setup once per release before starting dependent workloads. Confirm the uploader and dashboard use the same database and search path. Do not blindly replace the existing uploader's schema ownership.
+
 ## License
 
 The repository is MIT licensed. Code extracted from Dashboard-django retains the copyright notice in [CORE_LICENSE](CORE_LICENSE).
