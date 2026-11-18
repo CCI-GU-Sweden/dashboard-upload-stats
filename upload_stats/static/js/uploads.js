@@ -67,6 +67,7 @@
         barmode: 'stack', hovermode: 'x unified', showlegend: false,
         margin: {l: 65, r: 20, t: 15, b: 60},
         ...theme,
+        hoverlabel: {bgcolor: '#ffffff', bordercolor: '#cbd5e1', font: {color: '#0f172a'}},
         xaxis: {...theme.xaxis, title: {text: 'Date'}, type: 'date'},
         yaxis: {...theme.yaxis, title: {text: sizeMetric ? 'Data (GB)' : 'Files'}, rangemode: 'tozero'},
       }, {responsive: true, displaylogo: false, toImageButtonOptions: {format: 'png', filename: 'uploads-chart'}});

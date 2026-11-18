@@ -34,6 +34,8 @@ test('upload chart renders stacked Plotly series and updates the requested metri
   assert.equal(rendered.length, 1);
   assert.equal(rendered[0][1][0].type, 'bar');
   assert.equal(rendered[0][2].barmode, 'stack');
+  assert.equal(rendered[0][2].hoverlabel.bgcolor, '#ffffff');
+  assert.equal(rendered[0][2].hoverlabel.font.color, '#0f172a');
   assert.equal(rendered[0][2].yaxis.title.text, 'Files');
   elements.metric.value = 'total_file_size_mb';
   elements.metric.listeners.change();
